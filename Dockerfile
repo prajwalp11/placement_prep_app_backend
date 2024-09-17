@@ -35,9 +35,8 @@
 # CMD ["java", "-jar", "target/*.jar"]
 
 
-
 # Use Maven image to build and run the application
-FROM maven:3.8.4-openjdk-17-slim
+FROM maven:3.8.4-openjdk-17-slim AS build
 
 # Set the working directory in the container
 WORKDIR /app
@@ -51,6 +50,14 @@ COPY src ./src
 # Package the application
 RUN mvn clean package -DskipTests
 
+# Use OpenJDK for running the application
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+# Copy the built JAR file from the build stage
+COPY --from=build /app/target/*.jar app.jar
+
 # Specify the command to run your application
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "app.jar"]
 
