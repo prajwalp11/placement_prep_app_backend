@@ -14,6 +14,29 @@
 # Build stage
 
 # Use Maven image to build and run the application
+# FROM maven:3.8.4-openjdk-17-slim
+
+# # Set the working directory in the container
+# WORKDIR /app
+
+# # Copy the pom.xml file
+# COPY pom.xml .
+
+# # Download project dependencies
+# RUN mvn dependency:go-offline -B
+
+# # Copy your source code
+# COPY src ./src
+
+# # Package the application
+# RUN mvn package -DskipTests
+
+# # Specify the command to run your application
+# CMD ["java", "-jar", "target/*.jar"]
+
+
+
+# Use Maven image to build and run the application
 FROM maven:3.8.4-openjdk-17-slim
 
 # Set the working directory in the container
@@ -22,14 +45,11 @@ WORKDIR /app
 # Copy the pom.xml file
 COPY pom.xml .
 
-# Download project dependencies
-RUN mvn dependency:go-offline -B
-
 # Copy your source code
 COPY src ./src
 
 # Package the application
-RUN mvn package -DskipTests
+RUN mvn clean package -DskipTests
 
 # Specify the command to run your application
 CMD ["java", "-jar", "target/*.jar"]
