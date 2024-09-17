@@ -12,11 +12,11 @@
 # EXPOSE 8080
 # ENTRYPOINT ["ja%a","-jar","demo.jar"]
 # Build stage
-# Build stage
+
 FROM maven:3.8.4-openjdk-17-slim AS build
 WORKDIR /app
 COPY pom.xml .           # Copy the pom.xml to resolve dependencies
-RUN mvn dependency:go-offline # Download dependencies
+RUN mvn dependency:go-offline # Download dependencies (optional)
 
 COPY src ./src           # Copy the source code
 RUN mvn clean package    # Package the project (skip tests if necessary)
